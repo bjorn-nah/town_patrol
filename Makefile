@@ -43,7 +43,7 @@ CFLAGS=-I $(CC65_INC) -t $(SYS) --add-source -O -Or -Cl -Os
 # name of your product:
 target = town_patrol
 # adpat to your resourses
-objects = main.o title_screen.o game.o result_screen.o\
+objects = main.o title_screen.o game.o result_screen.o font_score.o\
 	soundbs.o idonno.o\
 	title01.o title02.o sky03.o\
 	sky02.o shoot01.o\
@@ -54,7 +54,8 @@ objects = main.o title_screen.o game.o result_screen.o\
 	explode10.o explode11.o explode12.o explode13.o explode14.o explode15.o explode16.o explode17.o explode18.o explode19.o\
 	explode20.o explode21.o explode22.o explode23.o explode24.o explode25.o explode26.o explode27.o explode28.o explode29.o\
 	skyline01.o skyline02.o skyline03.o skyline04.o skyline05.o skyline06.o skyline07.o skyline11.o skyline12.o skyline13.o\
-	city01.o city02.o city03.o city04.o
+	city01.o city02.o city03.o city04.o\
+	font_0.o font_1.o font_2.o font_3.o font_4.o font_5.o font_6.o font_7.o font_8.o font_9.o
 
 
 $(target) : $(objects)

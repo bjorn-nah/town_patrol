@@ -11,6 +11,7 @@
 extern void init_music();
 extern void start_music();
 extern void std_functions();
+extern void draw_score(unsigned char x, unsigned char y, unsigned char wx, unsigned char wy, const unsigned int num);
 
 extern unsigned int level, score;
 
@@ -981,9 +982,11 @@ void game(){
 				tgi_outtextxy(36, 48, "GAME PAUSED");
 			}
 			//score
-			tgi_setcolor(COLOR_RED);
-			itoa(score, text, 10);
-			tgi_outtextxy(8, 8, text);
+			//tgi_setcolor(COLOR_RED);
+			//itoa(score, text, 10);
+			//tgi_outtextxy(8, 8, text);
+			
+			draw_score(8,8,6,0,score);
 			
 			//last_time = now;
 			//now = clock();
