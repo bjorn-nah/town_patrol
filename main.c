@@ -83,15 +83,23 @@ void start_music(void)
 	asm("ldy musicptr+3");
 	asm("ldx #1");
 	asm("jsr SndStartSound");
-	asm("lda musicptr+4");
-	asm("ldy musicptr+5");
-	asm("ldx #2");
-	asm("jsr SndStartSound");
+	// keep channel 3 for sfx
+	//asm("lda musicptr+4");
+	//asm("ldy musicptr+5");
+	//asm("ldx #2");
+	//asm("jsr SndStartSound");
 	asm("lda musicptr+6");
 	asm("ldy musicptr+7");
 	asm("ldx #3");
 	asm("jsr SndStartSound");
 	asm("jsr SndPauseOff");
+}
+void start_crash(void)
+{
+	asm("lda musicptr+4");
+	asm("ldy musicptr+5");
+	asm("ldx #2");
+	asm("jsr SndStartSound");
 }
 
 void initialize()

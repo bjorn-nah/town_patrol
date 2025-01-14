@@ -10,6 +10,7 @@
 
 extern void init_music();
 extern void start_music();
+extern void start_crash();
 extern void std_functions();
 extern void draw_score(unsigned char x, unsigned char y, unsigned char wx, unsigned char wy, const unsigned int num);
 
@@ -132,6 +133,8 @@ extern unsigned char skyline11[];
 extern unsigned char skyline12[];
 extern unsigned char skyline13[];
 
+extern unsigned char pause_msg[];
+
 unsigned int hero_tics, hero_step;
 unsigned int difficulty, debug;
 unsigned int debug2, debug3, debug4, debug5;
@@ -165,6 +168,16 @@ SCB_REHVST_PAL background = {
 	{0x01,0x23,0x45,0x67,0x89,0xAB,0xCD,0xEF}
 };
 
+SCB_REHV_PAL pause_spr = {
+	BPP_4 | TYPE_NORMAL, 
+	REHV,
+	0x01,
+	0x0000,
+	pause_msg,
+	48, 46,
+	0x0100, 0x0100,
+	{0x01,0x23,0x45,0x67,0x89,0xAB,0xCD,0xEF}
+};
 
 SCB_REHVST_PAL skyline_bg01, skyline_bg02, skyline_bg03, skyline_bg04, skyline_bg05, skyline_bg06;
 SCB_REHVST_PAL skyline_bg11, skyline_bg12, skyline_bg13, skyline_bg14, skyline_bg15, skyline_bg16;
@@ -758,6 +771,7 @@ void physics(){
 						difficulty++;
 						max_enemy_speed=1+(difficulty/10);
 						shoot_status[y]=SHOOT_OFF;
+						start_crash();
 					}
 				}
 				
@@ -776,6 +790,7 @@ void physics(){
 			if(xdiff>-10 && xdiff<10 && ydiff>-8 && ydiff<8){
 				hero_attr.status=EXPLODE;
 				hero_attr.tic=0;
+				start_crash();
 			}
 		}
 		work_spr_spl = (SCB_REHV_PAL *)work_spr_spl->next;
@@ -868,6 +883,7 @@ void enemy_logic(){
 				if(work_spr_spl->vpos>88){
 					enemy_list[y].status=ENEMY_EXPLO;
 					enemy_list[y].tic=0;
+					start_crash();
 				}
 			}
 			if(enemy_list[y].status==ENEMY_RUN || enemy_list[y].status==ENEMY_RUN2){
@@ -978,8 +994,9 @@ void game(){
 				enemy_logic();
 				physics();
 			} else{
-				
-				tgi_outtextxy(36, 48, "GAME PAUSED");
+				tgi_sprite(&background);
+				//tgi_outtextxy(36, 48, "GAME PAUSED");
+				tgi_sprite(&pause_spr);
 			}
 			//score
 			//tgi_setcolor(COLOR_RED);
