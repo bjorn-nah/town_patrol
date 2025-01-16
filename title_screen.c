@@ -8,6 +8,10 @@
 extern unsigned char title01[];
 extern unsigned char title02[];
 extern unsigned char sky03[];
+extern unsigned char text_lynxjam[];
+extern unsigned char text_press[];
+extern unsigned char text_gfx[];
+extern unsigned char text_code[];
 
 unsigned char title_gross[6];
 
@@ -31,11 +35,23 @@ SCB_REHVST_PAL title_tule_01 = {
 	{0x01,0x23,0x45,0x67,0x89,0xAB,0xCD,0xEF}
 };
 SCB_REHVST_PAL title_tule_02, title_back;
+SCB_REHV_PAL text_01 = {
+	BPP_4 | TYPE_NORMAL, 
+	REHV,
+	0x01,
+	0x0000,
+	text_lynxjam,
+	44, 88,
+	0x0100, 0x0100,
+	{0x01,0x23,0x45,0x67,0x89,0xAB,0xCD,0xEF}
+};
+SCB_REHV_PAL text_02;
 
 void screen_init(){
 	title_back = title_tule_02= title_tule_01;
+	text_02 = text_01;
 
-	title_tule_02.next = 0x0000;
+	title_tule_02.next = (char *)&text_01;
 	title_tule_01.next = (char *)&title_tule_02;
 	title_back.next = (char *)&title_tule_01;
 	
@@ -59,6 +75,12 @@ void screen_init(){
 	title_tule_02.tilt = 0x0000;
 	title_back.tilt = 0x0000;
 	
+	text_02.vpos=78;
+	text_02.next = 0x0000;
+	text_02.vsize=0x0000;
+	text_02.sprctl1=SKIP;
+	text_01.next = (char *)&text_02;
+	text_01.sprctl1=SKIP;
 
 }
 
@@ -74,29 +96,52 @@ void screen_update(){
 	if(title_step==1){
 		title_tule_01.tilt+=0x0010;
 		title_tule_02.tilt-=0x0010;
-		if(title_tule_01.tilt==0xFFB0){title_step=2;}
+		if(title_tule_01.tilt==0xFFB0){
+			title_step=2;
+			text_01.sprctl1=REHV;
+			text_02.sprctl1=REHV;
+		}
 	}
 	
-	if(title_step==2){
+	if(title_step>=2){
 		switch(message){
 			case 1:
-				tgi_outtextxy( 32, 78, "Press A or B");
+				//tgi_outtextxy( 32, 78, "Press A or B");
+				text_02.data=text_press;
+				text_02.hpos=44;
 				break;
 			case 2:
-				tgi_outtextxy( 16, 78, "Graphics by 0x72");
+				//tgi_outtextxy( 16, 78, "Graphics by 0x72");
+				text_02.data=text_gfx;
+				text_02.hpos=32;
 				break;
 			case 3:
-				tgi_outtextxy( 4, 78, "Code&Music by Bjorn");
+				//tgi_outtextxy( 4, 78, "Code&Music by Bjorn");
+				text_02.data=text_code;
+				text_02.hpos=23;
 				break;
 		}
-		tic_screen--;
-		if(tic_screen==0){
-			message++;
-			if(message>3){message=1;}
-			tic_screen=120;
+		if(title_step==2){
+			text_02.vsize+=0x0010;
+			if (text_02.vsize>=0x0100){title_step=3;}
+		}
+		if(title_step==3){
+			tic_screen--;
+			if(tic_screen==0){
+				title_step=4;
+			}
+		}
+		if(title_step==4){
+			text_02.vsize-=0x0010;
+			if(text_02.vsize==0x0000){
+				message++;
+				if(message>3){message=1;}
+				tic_screen=120;
+				title_step=2;
+			}
 		}
 	}
-	tgi_outtextxy( 32, 88, "#LynxJam2024");
+	//tgi_outtextxy( 32, 88, "#LynxJam2024");
 	
 
 	
