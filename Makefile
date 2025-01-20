@@ -56,7 +56,7 @@ objects = main.o title_screen.o game.o result_screen.o font_score.o\
 	skyline01.o skyline02.o skyline03.o skyline04.o skyline05.o skyline06.o skyline07.o skyline11.o skyline12.o skyline13.o\
 	city01.o city02.o city03.o city04.o\
 	font_0.o font_1.o font_2.o font_3.o font_4.o font_5.o font_6.o font_7.o font_8.o font_9.o\
-	pause_msg.o text_lynxjam.o text_press.o text_gfx.o text_code.o
+	pause_msg.o text_lynxjam.o text_press.o text_gfx.o text_code.o text_gameover.o text_score.o text_hiscore.o text_version.o text_thx.o
 
 
 $(target) : $(objects)

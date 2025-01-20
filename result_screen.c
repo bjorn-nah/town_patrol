@@ -5,24 +5,66 @@
 #include <conio.h>
 #include <joystick.h> 
 
-extern unsigned int level, score;
+extern void draw_score(unsigned char x, unsigned char y, unsigned char wx, unsigned char wy, const unsigned int num);
+
+extern unsigned char text_gameover[];
+extern unsigned char text_score[];
+extern unsigned char text_hiscore[];
+extern unsigned char text_press[];
+extern unsigned char text_version[];
+extern unsigned char text_thx[];
+
+extern unsigned int level, score, hi_score;
 extern void std_functions();
 
 unsigned int button_result;
 
-/*
-void end_init(){
-	char text[20];
+SCB_REHV_PAL end_text_01 = {
+	BPP_4 | TYPE_NORMAL, 
+	REHV,
+	0x01,
+	0x0000,
+	text_gameover,
+	53, 8,
+	0x0100, 0x0100,
+	{0x01,0x23,0x45,0x67,0x89,0xAB,0xCD,0xEF}
+};
+SCB_REHV_PAL end_text_02, end_text_03, end_text_04, end_text_05, end_text_06;
 
+void end_init (){
+	button_result = 1;
+	if(score>hi_score){
+		hi_score=score;
+	}
+	tgi_clear();
+	end_text_02 = end_text_03 = end_text_04 = end_text_05 = end_text_06 = end_text_01;
 	
-	tgi_setcolor(COLOR_RED);
-	tgi_outtextxy(8, 8, "GAME OVER");
-	tgi_outtextxy(8, 16, "You are level");
-	itoa(level, text, 10);
-	tgi_outtextxy(8, 24, text);
+	end_text_01.next=(char *)&end_text_02;
 	
-	tgi_outtextxy(8, 40, "Press A or B");
-}*/
+	end_text_02.data=text_score;
+	end_text_02.hpos=40;
+	end_text_02.vpos=24;
+	end_text_02.next=(char *)&end_text_03;
+	end_text_03.data=text_hiscore;
+	end_text_03.hpos=55;
+	end_text_03.vpos=40;
+	end_text_03.next=(char *)&end_text_04;
+	end_text_04.data=text_press;
+	end_text_04.hpos=44;
+	end_text_04.vpos=64;
+	end_text_04.next=(char *)&end_text_05;
+	end_text_05.data=text_version;
+	end_text_05.hpos=50;
+	end_text_05.vpos=80;
+	end_text_05.next=(char *)&end_text_06;
+	end_text_06.data=text_thx;
+	end_text_06.hpos=24;
+	end_text_06.vpos=88;
+	end_text_06.next=0x0000;
+	draw_score(64,32,6,0,score);
+	draw_score(64,48,6,0,hi_score);
+	
+}
 
 void end_logic(){
 	unsigned char joy;
@@ -39,20 +81,11 @@ void end_logic(){
 
 
 void result_screen(){
-	char text[20];
 	
 	button_result = 1;
 	tgi_clear();
-	tgi_setcolor(COLOR_RED);
-	tgi_outtextxy(40, 8, "GAME OVER");
-	tgi_outtextxy(24, 24, "YOUR SCORE IS:");
-	itoa(score, text, 10);
-	tgi_outtextxy(64, 32, text);
-	
-	tgi_outtextxy(32, 48, "Press A or B");
-	
-	tgi_outtextxy(16, 80, "JAM 0.3 version.");
-	tgi_outtextxy(8, 88, "Thanks for playing");
+	end_init();
+	tgi_sprite(&end_text_01);
 	
 	tgi_updatedisplay();
 	

@@ -51,7 +51,7 @@ unsigned char palette[] = {
 };
 
 
-unsigned int level, score;
+unsigned int level, score, hi_score=0;
 
 
 void setpalette(const int* palette)
