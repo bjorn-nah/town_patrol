@@ -36,6 +36,16 @@ static SCB_REHV_PAL sprite_base = {
 };
 static SCB_REHV_PAL* sprite = &(sprite_base);
 
+unsigned int get_digit_nb(const unsigned int num){
+	unsigned int value = num;
+	unsigned int digits = 0;
+	// count number of digits in number
+	while (value) {
+		value /= 10;
+		digits++;
+	}
+	return digits;
+}
 
 void draw_score(unsigned char x, unsigned char y, unsigned char wx, unsigned char wy, const unsigned int num) {
 	if (num == 0) {
@@ -46,13 +56,9 @@ void draw_score(unsigned char x, unsigned char y, unsigned char wx, unsigned cha
 	}
 	else {
 		unsigned int value = num;
-		unsigned int digit, digits = 0;
-		
-		// count number of digits in number
-		while (value) {
-			value /= 10;
-			digits++;
-		}
+		unsigned int digit, digits;
+		digits = get_digit_nb(num);
+
 		// draw digits in reverse order
 		value = num;
 		y += (digits - 1) * wy;
