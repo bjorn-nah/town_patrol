@@ -17,6 +17,8 @@ The music was composed and played
 thank to chipper tool and player.
 Graphics convertion was make with
 sprpck.
+Score display is based on 7segmentfont
+demo by Igor Kromin.
 Code and bleeps by Bjorn.
 Graphics asset by 0x72.
 
@@ -24,6 +26,11 @@ Thanks:
 All staff of LynxJam2024.
 
 Version history:
+- v0.4:
+	- Refresh title and end screen
+	- Add sound effect on explosions
+	- Use custom font for the score
+	- Add hi-score to the end screen
 - v0.3 JAM:
 	- Add title-screen + effect
 	- Add monsters to the back plan
